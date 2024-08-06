@@ -1,0 +1,12 @@
+version: Compose specification
+
+service:
+    example-py:
+        build: .
+
+networks:
+    example-py-net:
+        name: example-py-net
+        ipam:
+            config:
+                -   subnet: 172.16.238.0/24
