@@ -1,0 +1,13 @@
+services:
+    example-py:
+        build: .
+        image: example-py
+        ports:
+            - 8000:8000
+
+networks:
+    example-py-net:
+        name: example-py-net
+        ipam:
+            config:
+                -   subnet: 172.16.238.0/24
