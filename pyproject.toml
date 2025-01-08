@@ -1,0 +1,100 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "example-py"
+version = "0.0.1"
+description = "A nice example project"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [
+    { name = "X Author Name", email = "x-pt@example.com" },
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "allure-pytest>=2.13.5",
+]
+
+[project.urls]
+Documentation = "https://github.com/x-pt/example-py#readme"
+Issues = "https://github.com/x-pt/example-py/issues"
+Source = "https://github.com/x-pt/example-py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/example_py"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = [
+    "-ra",
+    "-q",
+    "--cov=example-py",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-report=lcov",
+    "--alluredir=allure-results",
+]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_functions = ["test_*"]
+markers = [
+    "integration: marks tests as integration tests (deselect with '-m \"not integration\"')",
+]
+
+[tool.coverage.run]
+source_pkgs = ["example_py"]
+branch = true
+parallel = true
+omit = [
+    "*/.venv/*",
+    "*/tests/*",
+    "*/site-packages/*",
+]
+
+[tool.coverage.paths]
+example_py = ["src/example_py", "*/example-py/src/example_py"]
+tests = ["tests", "*/example-py/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "if __name__ == .__main__.:",
+    "if self.debug:",
+    "if TYPE_CHECKING:",
+    "no cov",
+    "raise NotImplementedError",
+    "pass",
+    "pragma: no cover",
+]
+show_missing = true  # Show missing lines in the report
+precision = 2  # Number of decimal places to use when rounding
+
+[tool.mypy]
+# Enable strict mode for comprehensive type checking
+strict = true
+python_version = "3.11"
+
+# Error reporting settings
+pretty = true              # Beautify output for better readability
+show_error_codes = true    # Display error codes for easier troubleshooting
+show_error_context = true  # Show context for errors to aid debugging
+
+# Ignore missing type hints for third-party libraries
+ignore_missing_imports = true
+
+# Exclude specific paths or files from type checking
+exclude = [
+    "tests/",
+    "setup.py",
+]
+
+# Relax type-checking rules for test files (e.g., allow functions without type annotations)
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
